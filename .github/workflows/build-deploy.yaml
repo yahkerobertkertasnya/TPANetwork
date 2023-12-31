@@ -18,7 +18,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Login to Nexus Docker Registry
-      run: docker login -u ${{ env.NEXUS_USERNAME }} -p ${{ env.NEXUS_PASSWORD }}
+      run: echo "${{ env.NEXUS_PASSWORD }}" | docker login -u "${{ env.NEXUS_USERNAME }}" --password-stdin ${{ env.NEXUS_URL }}
     - name: Build Docker Image
       run: docker build -t ${{ env.NEXUS_USERNAME }}/${{ env.IMAGE_REPO_NAME }}:latest .
     - name: Push Docker Image
