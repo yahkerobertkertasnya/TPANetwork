@@ -26,29 +26,29 @@ jobs:
       with:
         push: true
         tags: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_REPO_NAME }}:latest
-  deploy:
-    name: Deploy
-    if: github.ref == 'refs/heads/main'
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-    - name: Kubernetes Set Context
-      uses: azure/k8s-set-context@v1
-      with:
-        method: kubeconfig
-        kubeconfig: ${{ secrets.KUBE_CONFIG }}
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Deploy
-      uses: azure/k8s-deploy@v1
-      with:
-          manifests: |
-            deployments/clusterrole.yaml
-            deployments/app-deployment.yaml
-            deployments/serviceaccount-secret.yaml
-          images: |
-            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_REPO_NAME }}:latest
-          imagepullsecrets: |
-            docker-credentials
-          namespace: default
-          strategy: recreate
+#  deploy:
+#    name: Deploy
+#    if: github.ref == 'refs/heads/main'
+#    needs: [build]
+#    runs-on: ubuntu-latest
+#    steps:
+#    - name: Kubernetes Set Context
+#      uses: azure/k8s-set-context@v1
+#      with:
+#        method: kubeconfig
+#        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+#    - name: Checkout
+#      uses: actions/checkout@v2
+#    - name: Deploy
+#      uses: azure/k8s-deploy@v1
+#      with:
+#          manifests: |
+#            deployments/clusterrole.yaml
+#            deployments/app-deployment.yaml
+#            deployments/serviceaccount-secret.yaml
+#          images: |
+#            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_REPO_NAME }}:latest
+#          imagepullsecrets: |
+#            docker-credentials
+#          namespace: default
+#          strategy: recreate
