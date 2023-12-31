@@ -6,26 +6,36 @@ on:
       - main
 
 env:
-  DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-  DOCKER_ACCESS_TOKEN: ${{secrets.DOCKER_ACCESS_TOKEN}}
+  NEXUS_URL: ${{secrets.NEXUS_URL}}
+  NEXUS_USERNAME: ${{secrets.NEXUS_USERNAME}}
+  NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
   IMAGE_REPO_NAME: ${{secrets.IMAGE_REPO_NAME}}
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Login to DockerHub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ env.DOCKER_USERNAME }}
-        password: ${{ env.DOCKER_ACCESS_TOKEN }}
-    - name: Build and Push
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_REPO_NAME }}:latest
+    - name: Login to Nexus Docker Registry
+      run: docker login -u ${{ env.NEXUS_USERNAME }} -p ${{ env.NEXUS_PASSWORD }}
+    - name: Build Docker Image
+      run: docker build -t ${{ env.NEXUS_USERNAME }}/${{ env.IMAGE_REPO_NAME }}:latest .
+    - name: Push Docker Image
+      run: docker push ${{ env.NEXUS_URL }}/${{ env.IMAGE_REPO_NAME }}:latest
+
+
+#  steps:
+#    - name: Checkout Repository
+#      uses: actions/checkout@v2
+#
+#    - name: Log into Nexus Docker Registry
+#      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin your-nexus-url:your-nexus-port
+#
+#    - name: Build and Push Docker Image
+#      run: |
+#        docker build -t your-nexus-url:your-nexus-port/your-image:your-tag .
+#        docker push your-nexus-url:your-nexus-port/your-image:your-tag
 #  deploy:
 #    name: Deploy
 #    if: github.ref == 'refs/heads/main'
