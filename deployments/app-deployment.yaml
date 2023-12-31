@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yuri-deployment
+spec:
+  selector:
+    matchLabels:
+      app: yuri
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yuri
+    spec:
+      containers:
+        - name: yuri
+          image: docker.io/yahkerobertkertasnya/tpa-network:latest
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: docker-credentials
