@@ -25,8 +25,6 @@ jobs:
       run: docker push ${{ env.NEXUS_URL }}/${{ env.IMAGE_REPO_NAME }}:latest
 
 
-
-
 #  steps:
 #    - name: Checkout Repository
 #      uses: actions/checkout@v2
