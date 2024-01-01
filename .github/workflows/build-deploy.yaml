@@ -19,14 +19,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Kubernetes CLI
-        uses: azure/k8s-set-context@v1
-        with:
-          kubeconfig: ${{ env.KUBE_CONFIG_DATA }}
-
       - name: Trigger Rollout
         run: |
-          kubectl rollout restart deployment yuri-deployment
+          echo "${{ env.KUBE_CONFIG_DATA }}" > kubeconfig.yaml
+          kubectl --kubeconfig=kubeconfig.yaml rollout restart deployment yuri-deployment
+          rm kubeconfig.yaml
 
 
 
