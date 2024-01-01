@@ -8,7 +8,7 @@
 <body>
 
 <form action="../controller/auth/login.php" method="post">
-    <h2>Login YURIIII NOBOLLLL</h2>
+    <h2>NOBOL GAY</h2>
 
     <?php
     if (isset($_GET['error'])) {
