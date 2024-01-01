@@ -15,6 +15,7 @@ spec:
       containers:
         - name: yuri
           image: docker.io/yahkerobertkertasnya/tpa-network:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
       imagePullSecrets:
