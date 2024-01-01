@@ -8,7 +8,7 @@
 <body>
 
     <form action="../controller/auth/register.php" method="post">
-        <h2>Register YURIIIIIIIIIIIII</h2>
+        <h2>YURIIIIIIIIIIIII Register YURIIIIIIIIIIIII</h2>
 
         <?php
         if (isset($_GET['error'])) {
