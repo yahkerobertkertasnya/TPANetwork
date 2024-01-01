@@ -10,6 +10,7 @@ env:
   NEXUS_USERNAME: ${{secrets.NEXUS_USERNAME}}
   NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
   IMAGE_REPO_NAME: ${{secrets.IMAGE_REPO_NAME}}
+  KUBE_CONFIG_DATA: ${{secrets.KUBE_CONFIG_DATA}}
 
 jobs:
   deploy:
@@ -18,16 +19,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Trigger deploy
-        uses: Consensys/kubernetes-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      - name: Set up Kubernetes CLI
+        uses: azure/k8s-set-context@v1
         with:
-          args: rollout restart deployment yuri-deployment
+          kubeconfig: ${{ env.KUBE_CONFIG_DATA }}
 
-#      - name: Trigger Rollout
-#        run: |
-#          kubectl rollout restart deployment yuri-deployment
+      - name: Trigger Rollout
+        run: |
+          kubectl rollout restart deployment yuri-deployment
 
 #  steps:
 #    - name: Checkout Repository
