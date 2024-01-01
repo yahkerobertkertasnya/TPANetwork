@@ -39,9 +39,8 @@ jobs:
         with:
           kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
 
-      - name: Update Deployment and Trigger Rollout
+      - name: Trigger Rollout
         run: |
-          kubectl apply -f yuri-deployment.yaml
           kubectl rollout restart deployment yuri-deployment
 
 #  steps:
