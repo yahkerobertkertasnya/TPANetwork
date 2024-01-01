@@ -12,24 +12,24 @@ env:
   IMAGE_REPO_NAME: ${{secrets.IMAGE_REPO_NAME}}
 
 jobs:
-  build:
-    runs-on: self-hosted
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Login to Nexus Docker Registry
-      run: echo "${{ env.NEXUS_PASSWORD }}" | docker login -u "${{ env.NEXUS_USERNAME }}" --password-stdin ${{ env.NEXUS_URL }}
-
-    - name: Build Docker Image
-      run: docker build -t ${{ env.NEXUS_URL }}/${{ env.IMAGE_REPO_NAME }}:latest .
-
-    - name: Push Docker Image
-      run: docker push ${{ env.NEXUS_URL }}/${{ env.IMAGE_REPO_NAME }}:latest
+#  build:
+#    runs-on: self-hosted
+#    steps:
+#    - name: Checkout
+#      uses: actions/checkout@v2
+#
+#    - name: Login to Nexus Docker Registry
+#      run: echo "${{ env.NEXUS_PASSWORD }}" | docker login -u "${{ env.NEXUS_USERNAME }}" --password-stdin ${{ env.NEXUS_URL }}
+#
+#    - name: Build Docker Image
+#      run: docker build -t ${{ env.NEXUS_URL }}/${{ env.IMAGE_REPO_NAME }}:latest .
+#
+#    - name: Push Docker Image
+#      run: docker push ${{ env.NEXUS_URL }}/${{ env.IMAGE_REPO_NAME }}:latest
 
   deploy:
     runs-on: self-hosted
-    needs: build
+#    needs: build
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
       - name: Set up Kubernetes CLI
         uses: azure/k8s-set-context@v1
         with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
+          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA | base64 -d }}
 
       - name: Trigger Rollout
         run: |
