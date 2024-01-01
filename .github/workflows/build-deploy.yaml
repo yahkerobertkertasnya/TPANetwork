@@ -18,17 +18,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Debug Kubeconfig Secret
-        run: echo ${{ secrets.KUBE_CONFIG_DATA }} | base64 -d
-
-      - name: Set up Kubernetes CLI
-        uses: azure/k8s-set-context@v1
+      - name: Trigger deploy
+        uses: Consensys/kubernetes-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
+          args: rollout restart deployment yuri-deployment
 
-      - name: Trigger Rollout
-        run: |
-          kubectl rollout restart deployment yuri-deployment
+#      - name: Trigger Rollout
+#        run: |
+#          kubectl rollout restart deployment yuri-deployment
 
 #  steps:
 #    - name: Checkout Repository
