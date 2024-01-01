@@ -28,6 +28,7 @@ jobs:
         run: |
           kubectl rollout restart deployment yuri-deployment
 
+
 #  steps:
 #    - name: Checkout Repository
 #      uses: actions/checkout@v2
