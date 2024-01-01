@@ -18,10 +18,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Debug Kubeconfig Secret
+        run: echo "${{ secrets.KUBE_CONFIG_DATA | base64 -d }}"
+
       - name: Set up Kubernetes CLI
         uses: azure/k8s-set-context@v1
         with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA | base64 -d }}
+          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
 
       - name: Trigger Rollout
         run: |
